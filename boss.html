@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>統制者ハシュマリム討滅戦</title>
+    <link rel="stylesheet" href="boss.css">
+</head>
+<body>
+
+    <div class="game-container">
+        <header>
+            <h1>ハシュマリム討滅戦</h1>
+            <a href="game_pictmancer.html" class="back-link">↩ タイトルへ戻る</a>
+        </header>
+
+        <div id="battle-field">
+            <div id="enemy-area">
+                <div class="boss-hud">
+                    <div class="status-row">
+                        <span class="name">統制者ハシュマリム</span>
+                        <span id="boss-hp-text">HP: 5000</span>
+                    </div>
+                    <div class="hp-bar-bg"><div id="boss-hp-bar"></div></div>
+                </div>
+                
+                <div id="boss-sprite" class="boss-img"></div>
+                <div id="boss-damage-text" class="damage-popup hidden"></div>
+            </div>
+
+            <div id="battle-log">
+                <p>ハシュマリムが現れた！</p>
+            </div>
+
+            <div id="player-area">
+                <div class="player-hud">
+                    <div class="status-row">
+                        <span class="name">PLAYER</span>
+                        <span id="player-hp-text" class="hp-text">HP: 1000 / 1000</span>
+                    </div>
+                    <div class="hp-bar-bg"><div id="player-hp-bar"></div></div>
+                </div>
+
+                <div id="command-menu">
+                    <div id="menu-main" class="menu-grid">
+                        <button id="btn-attack" class="cmd-btn attack">
+                            ⚔ 攻撃<br><span class="sub-text">通常攻撃</span>
+                        </button>
+                        <button id="btn-heal" class="cmd-btn heal">
+                            ✨ 回復<br><span class="sub-text">HP回復</span>
+                        </button>
+                        <button id="btn-skill-mode" class="cmd-btn skill-mode-btn">
+                            🔮 スキル<br><span class="sub-text">必殺技を選択</span>
+                        </button>
+                    </div>
+
+                    <div id="menu-skills" class="menu-grid hidden">
+    <button id="btn-hammer" class="cmd-btn skill-hammer">
+        🔨 ハンマー<br><span class="sub-text">大ダメージ (CD:2)</span>
+    </button>
+    <button id="btn-sky" class="cmd-btn skill-sky">
+        🕊️ スカイ<br><span class="sub-text">回復+再行動 (CD:2)</span>
+    </button>
+
+    <button id="btn-tempera" class="cmd-btn skill-tempera hidden">
+        🛡️ テンペラコート<br><span class="sub-text">次ダメ半減 (CD:1)</span>
+    </button>
+    <button id="btn-rainbow" class="cmd-btn skill-rainbow hidden">
+        🌈 レインボードリップ<br><span class="sub-text">回復+攻撃 (CD:2)</span>
+    </button>
+    <button id="btn-chroma" class="cmd-btn skill-chroma hidden">
+        🎨 クロマチック<br><span class="sub-text">超絶ダメージ (CD:5)</span>
+    </button>
+
+    <button id="btn-back-menu" class="cmd-btn back-btn">
+        ↩ 戻る
+    </button>
+</div>
+                
+                <div id="player-damage-text" class="damage-popup hidden"></div>
+            </div>
+        </div>
+
+        <div id="quiz-modal" class="overlay hidden">
+            <div class="modal-content">
+                <h2 id="spell-name" class="danger-text">敵の技名</h2>
+                <p>攻撃を防ぐため、詠唱を解読せよ！</p>
+                <div class="quiz-box">
+                    <p id="question-text">ここに問題文が表示されます</p>
+                    <div class="input-area">
+                        <input type="text" id="answer-input" placeholder="答えを入力" autocomplete="off">
+                        <button id="btn-answer">詠唱阻止</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="rapid-mode-ui" class="hidden">
+    <div class="timer-box">残り時間: <span id="rapid-timer">30</span>秒</div>
+    <div class="score-box">正解数: <span id="rapid-score">0</span> / 5</div>
+</div>
+
+<div id="effect-overlay" class="overlay hidden"></div>
+
+        <div id="result-screen" class="overlay hidden">
+            <div class="modal-content">
+                <h2 id="result-title">RESULT</h2>
+                <p id="result-msg">メッセージ</p>
+                
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+                    <button id="btn-next-phase" class="cmd-btn hidden" style="background: linear-gradient(to bottom, #ffeb3b, #ffa000);">次のフェーズへ！</button>
+                    <button onclick="location.reload()" class="cmd-btn" style="background: #444;">もう一度挑戦</button>
+                    <button onclick="location.href='game_pictmancer.html'" class="cmd-btn" style="background: #00695c;">タイトルへ戻る</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="phase2-intro-overlay" class="overlay hidden">
+            <div class="intro-content">
+                <h2 id="boss-dialogue"></h2>
+                <div class="intro-effect-light hidden"></div>
+                <div class="intro-effect-flash hidden"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="boss.js"></script>
+    <audio id="bgm-phase2" src="phase2_theme.mp3" preload="auto" loop></audio>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pictmancer - History Ink Cleaner</title>
+    <link rel="stylesheet" href="game_pictmancer.css">
+</head>
+<body>
+
+    <div id="start-screen">
+        <div class="title-content">
+            <img src="title_logo.png" alt="Pictmancer" class="title-logo-img">
+            
+            <p class="sub-title">Pictmancer</p>
+            <p class="intro-text">歴史の汚れを払い、真実を解き放て。</p>
+            
+            <div class="button-container" style="display: flex; gap: 20px; justify-content: center; margin-top: 20px;">
+                <button id="btn-mode-quick" class="game-btn quick">
+                    10問モード<br><span style="font-size:0.8rem">手軽に遊ぶ</span>
+                </button>
+                <button id="btn-mode-all" class="game-btn all">
+                    全問モード<br><span style="font-size:0.8rem">完全制覇に挑む</span>
+                </button>
+            </div>
+            <a href="boss.html" class="game-btn boss" style="text-decoration:none; display:flex; align-items:center; justify-content:center;">
+    ハシュマリム討滅戦<br><span style="font-size:0.8rem">高難度レイドバトル</span>
+</a>
+        </div>
+        
+        <div class="bg-ink ink-1"></div>
+        <div class="bg-ink ink-2"></div>
+    </div>
+
+    <header id="game-header" class="hidden">
+        <div class="stats-container">
+            <div class="stat-box">
+                <span class="label">LIFE</span>
+                <div id="life-container"></div>
+            </div>
+            <div class="stat-box">
+                <span class="label">WAVE</span>
+                <span id="stage-display" class="value">1</span>
+            </div>
+            <div class="stat-box">
+                <span class="label">REMAINING</span>
+                <span id="ink-remaining" class="value">7</span>
+            </div>
+            
+            <div id="score-box" class="stat-box hidden">
+                <span class="label">PURIFIED</span>
+                <span id="score-display" class="value">0</span>
+            </div>
+        </div>
+    </header>
+
+    <main id="game-area" class="hidden">
+        <div id="ink-wrapper"></div>
+        <div id="stage-clear-msg">NEXT WAVE...</div>
+    </main>
+
+    <div id="question-panel" class="hidden">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <h3 class="panel-title" style="margin: 0;">汚れの正体（問題）</h3>
+            <button id="btn-back" class="close-btn">× 戻る</button>
+        </div>
+        
+        <div id="magic-area" class="magic-area hidden">
+            <div class="combo-display">
+                連続正解: <span id="combo-count">0</span> <span style="font-size:0.8rem; color:#888;">(MAX 15)</span>
+            </div>
+
+            <div class="skills-container">
+                <div class="skill-box">
+                    <button id="btn-hammer" class="skill-btn" disabled></button>
+                    <div class="skill-label">イマジネスハンマー<br><span>(10連:即浄化)</span></div>
+                </div>
+
+                <div class="skill-box">
+                    <button id="btn-sky" class="skill-btn" disabled></button>
+                    <div class="skill-label">イマジネススカイ<br><span>(15連+負傷:次金確定)</span></div>
+                </div>
+            </div>
+            
+            <div id="sky-active-msg" class="hidden">
+                <span style="color: gold;">★ 次のウェーブで奇跡(金)が起きる予感...！</span>
+            </div>
+        </div>
+
+        <p id="question-text">ここに問題文...</p>
+        <div class="input-area">
+            <input type="text" id="answer-input" placeholder="答えを記述せよ" autocomplete="off">
+            <button id="submit-btn">浄化 (Submit)</button>
+        </div>
+        <p id="feedback-msg"></p>
+    </div>
+    
+    <div id="game-over-screen" class="overlay hidden">
+        <div class="overlay-content">
+            <h2>MISSION FAILED</h2>
+            <p>歴史は闇に覆われた...</p>
+            
+            <p id="final-score-msg" style="color: #00bcd4; font-weight: bold; margin: 10px 0;"></p>
+            
+            <button onclick="location.reload()">再挑戦 (Retry)</button>
+        </div>
+    </div>
+
+    <div id="game-clear-screen" class="overlay hidden">
+        <div class="overlay-content">
+            <h2 style="color: gold; font-size: 2.5rem;">MISSION COMPLETE</h2>
+            <p>全ての歴史修正を完了しました。</p>
+            <p>称号：<strong>グランド・ピクトマンサー</strong></p>
+            
+            <div style="margin-top: 20px;">
+                <button onclick="location.reload()" style="background-color: #4CAF50;">タイトルへ戻る</button>
+            </div>
+            
+            </div>
+    </div>
+
+    <script src="game_pictmancer.js"></script>
+</body>
+</html>

@@ -1,0 +1,445 @@
+/* ベース設定 */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Georgia", "Yu Mincho", "Hiragino Mincho ProN", serif;
+    background-color: #222;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.hidden { display: none !important; }
+
+/* --- タイトル画面 --- */
+#start-screen {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    
+    /* タイトル背景画像 */
+    background-image: url('title_bg.jpg'); 
+    background-size: cover;
+    background-position: center;
+    
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.title-content {
+    z-index: 2002;
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    padding: 40px;
+    background-color: rgba(255, 255, 255, 0.85); 
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    backdrop-filter: blur(4px);
+}
+
+.title-logo-img {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    margin-bottom: 10px;
+    filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2));
+    animation: floatLogo 4s ease-in-out infinite;
+}
+
+@keyframes floatLogo {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.sub-title {
+    font-size: 1.5rem;
+    color: #5d3a9b;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    font-weight: bold;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+}
+
+.intro-text { color: #333; margin-bottom: 40px; font-weight: bold;}
+
+#game-start-btn {
+    background: #2b1b1b;
+    color: #fff;
+    border: none;
+    padding: 15px 50px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    font-family: serif;
+    transition: all 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    border-radius: 50px;
+}
+#game-start-btn:hover {
+    background: #5d3a9b;
+    transform: translateY(-3px) scale(1.05);
+}
+
+/* --- ゲーム画面ヘッダー --- */
+header {
+    background: rgba(43, 27, 27, 0.9);
+    color: #fff;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-around;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    z-index: 100;
+    position: relative;
+}
+.stats-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* 間隔を少し狭める */
+    flex-wrap: wrap; /* 画面が狭いときは折り返す */
+}
+
+.stat-box {
+    /* もし幅が固定されていたら auto にするか、少し小さくする */
+    min-width: 80px; 
+}
+.label { font-size: 0.7rem; color: #aaa; letter-spacing: 1px;}
+.value { font-size: 1.2rem; font-weight: bold; font-family: sans-serif;}
+
+.ink-bottle {
+    width: 18px; height: 24px;
+    background-color: #00bcd4;
+    display: inline-block; margin: 0 2px;
+    border-radius: 2px 2px 8px 8px; border: 2px solid #fff;
+}
+.ink-bottle.lost { background-color: #444; border-color: #666; opacity: 0.3; }
+
+/* --- ゲームエリア (背景設定) --- */
+#game-area {
+    flex: 1;
+    position: relative;
+    width: 100%; height: 100%;
+    background-image: url('game_bg.jpg'); 
+    background-size: cover;
+    background-position: center;
+}
+
+#ink-wrapper {
+    position: relative;
+    width: 100%; height: 100%;
+}
+
+/* --- インク (画像を使用する設定) --- */
+.ink-spot {
+    position: absolute;
+    width: 180px; 
+    height: 180px;
+    
+    background-size: contain; 
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.5s;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.5rem;
+    text-shadow: 0 0 5px #000;
+    
+    animation: floatInk 3s infinite ease-in-out;
+}
+
+.ink-spot::after {
+    display: none;
+}
+
+/* ★インク画像のファイル名指定 (.png または .jpg) */
+.ink-type-1 { background-image: url('ink1.png'); }
+.ink-type-2 { background-image: url('ink2.png'); }
+.ink-type-3 { background-image: url('ink3.png'); }
+
+
+@keyframes floatInk {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-5px) scale(1.05); }
+}
+.ink-spot:hover {
+    transform: scale(1.2) !important;
+    filter: brightness(1.2);
+}
+.ink-spot.cleaning {
+    animation: fadeOutInk 0.5s forwards;
+}
+@keyframes fadeOutInk {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.5); opacity: 0; filter: blur(10px); }
+}
+
+/* 問題パネル */
+#question-panel {
+    background: rgba(255, 255, 255, 0.95);
+    border-top: 5px solid #2b1b1b;
+    padding: 25px;
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.3);
+    position: relative; z-index: 200;
+    transition: transform 0.3s ease;
+}
+#question-panel.hidden { transform: translateY(100%); display: none; }
+.panel-title { margin: 0 0 10px 0; color: #555; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;}
+#question-text { font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; color: #111; }
+
+.input-area { display: flex; gap: 10px; }
+input[type="text"] {
+    flex: 1; padding: 12px; font-size: 1.1rem;
+    border: 2px solid #ccc; border-radius: 4px; background: #fff;
+}
+input[type="text"]:focus { border-color: #5d3a9b; outline: none; }
+button#submit-btn {
+    background: #2b1b1b; color: white; border: none;
+    padding: 0 25px; font-size: 1rem; border-radius: 4px; cursor: pointer; font-weight: bold;
+}
+
+/* メッセージ類 */
+#stage-clear-msg {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 4rem; font-weight: 900;
+    color: #fff; text-shadow: 4px 4px 0 #000;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.5s;
+    font-family: "Impact", sans-serif; white-space: nowrap; z-index: 500;
+}
+#stage-clear-msg.show { opacity: 1; }
+
+.overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex; justify-content: center; align-items: center; z-index: 3000;
+}
+.overlay-content {
+    background: #fff; padding: 50px; border-radius: 5px;
+    text-align: center; box-shadow: 0 0 50px rgba(255,255,255,0.2);
+}
+.btn-link {
+    display: inline-block; margin-top: 20px; padding: 12px 25px;
+    background: #28a745; color: white; text-decoration: none; border-radius: 4px;
+}
+.achievement {
+    position: fixed; bottom: 20px; right: -350px; width: 300px;
+    background-color: #222; color: #fff; display: flex; align-items: center;
+    padding: 15px; border-radius: 4px; border-left: 5px solid gold;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    transition: right 0.5s; z-index: 4000;
+}
+.achievement.show { right: 20px; }
+/* --- 追加：ボタンのスタイル調整 --- */
+.game-btn {
+    background: #2b1b1b;
+    color: #fff;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    font-family: serif;
+    transition: all 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    border-radius: 10px;
+    min-width: 180px;
+}
+.game-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+}
+/* クイックモードは青系、全問は赤系にするなど差別化 */
+.game-btn.quick { border-bottom: 4px solid #00bcd4; }
+.game-btn.all   { border-bottom: 4px solid #ff5722; }
+.game-btn.quick:hover { background: #00bcd4; }
+.game-btn.all:hover   { background: #ff5722; }
+
+
+/* --- 修正版：金のインク演出（画像指定） --- */
+.ink-spot.gold {
+    /* ★ここに画像のファイル名を書く */
+    background-image: url('ink_gold.png') !important;
+    
+    /* 画像のサイズ調整 */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    /* 以前の色変換フィルタ(hue-rotate)を削除し、
+       輝き(drop-shadow)だけを強くかけます */
+    filter: drop-shadow(0 0 15px rgba(255, 223, 0, 0.8)) !important;
+    
+    /* 少し大きくしてレア感を出す */
+    transform: scale(1.0); 
+    z-index: 100; /* 他のインクより手前に */
+    
+    /* 動きのアニメーション */
+    animation: floatInk 2s infinite ease-in-out;
+
+    /* 文字色や枠線の調整（画像の邪魔なら border: none; にしてください） */
+    color: #5c4d00;
+    border: none; 
+}
+
+/* --- 追加：ダメージ演出（画面揺れ） --- */
+.shake {
+    animation: shakeAnim 0.5s cubic-bezier(.36,.07,.19,.97) both;
+}
+@keyframes shakeAnim {
+    10%, 90% { transform: translate3d(-5px, 0, 0); }
+    20%, 80% { transform: translate3d(5px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-5px, 0, 0); }
+    40%, 60% { transform: translate3d(5px, 0, 0); }
+}
+
+/* --- 追加：回復演出 --- */
+.heal-effect {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    background-color: rgba(0,255,0,0.2);
+    animation: fadeOutHeal 0.5s forwards;
+    z-index: 9999;
+}
+@keyframes fadeOutHeal {
+    0% { opacity: 0.6; }
+    100% { opacity: 0; }
+}
+/* --- 追加：正解表示のスタイル --- */
+.answer-reveal {
+    display: block;          /* 改行させる */
+    margin-top: 10px;        /* 上に隙間をあける */
+    font-size: 1.1rem;       /* 少し大きく */
+    color: #fff;             /* 文字は白 */
+    background: rgba(0,0,0,0.5); /* 背景を半透明の黒に */
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #ff4444; /* 赤い枠線で囲む */
+    font-weight: bold;
+}
+/* --- 追加：スキル（イマジネス）エリア --- */
+.magic-area {
+    margin-bottom: 15px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    padding-bottom: 10px;
+}
+.combo-display {
+    font-size: 1.1rem;
+    color: #00bcd4;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.skills-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 10px;
+}
+
+.skill-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100px;
+}
+
+.skill-btn {
+    width: 64px;
+    height: 64px;
+    border-radius: 10px;
+    border: 2px solid #555;
+    background-color: #333;
+    background-size: cover;
+    background-position: center;
+    cursor: not-allowed;
+    transition: all 0.3s;
+    position: relative;
+    opacity: 0.5; /* 使えない時は半透明 */
+    box-shadow: inset 0 0 10px #000;
+}
+
+/* 画像指定（ファイルがない場合は単色になります） */
+#btn-hammer {
+    background-image: url('skill_hammer.jpg'); 
+    /* 画像がない場合の予備色 */
+    background-color: #ff5722; 
+}
+#btn-sky {
+    background-image: url('skill_sky.jpg');
+    /* 画像がない場合の予備色 */
+    background-color: #03a9f4;
+}
+
+.skill-label {
+    font-size: 0.75rem;
+    color: #aaa;
+    margin-top: 5px;
+    line-height: 1.2;
+}
+.skill-label span {
+    font-size: 0.6rem;
+}
+
+/* --- スキル使用可能状態 (Ready) --- */
+.skill-btn.ready {
+    border-color: #fff;
+    cursor: pointer;
+    opacity: 1;
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    animation: pulseSkill 2s infinite;
+}
+
+/* ハンマーが使える時は赤く光る */
+#btn-hammer.ready {
+    box-shadow: 0 0 15px rgba(255, 87, 34, 0.8);
+}
+/* スカイが使える時は青く光る */
+#btn-sky.ready {
+    box-shadow: 0 0 15px rgba(3, 169, 244, 0.8);
+}
+
+@keyframes pulseSkill {
+    0% { transform: scale(1.1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1.1); }
+}
+
+/* スカイ予約中のメッセージ */
+#sky-active-msg {
+    margin-top: 5px;
+    font-size: 0.9rem;
+    animation: floatMsg 2s infinite;
+}
+@keyframes floatMsg {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}
+/* --- 追加：戻るボタン --- */
+.close-btn {
+    background-color: #444;
+    border: 1px solid #777;
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.3s;
+}
+
+.close-btn:hover {
+    background-color: #666;
+    border-color: #aaa;
+}
